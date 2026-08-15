@@ -34,7 +34,7 @@ class Databasesys:
             file.seek(0)
             reader = csv.DictReader(file)
             self.secret_data= list(reader)
-            print(self.secret_data)
+            #print(self.secret_data)
 
     def addtodb(self, sub, filename):
         if sub.name in self.data:

@@ -7,7 +7,17 @@ import csv
 from Data_Models.Diff_Model import Difficulty
 from pprint import pprint
 
-subjects = {
+#TODO:Make the databse independent 
+#TODO:Add all options for diff 
+#TODO:Add exit Button
+#TODO:Make sure the fullc MVP works really well 
+#TODO:Optimize the code and make sure that its DRY
+#TODO:Make it Terminal friendly
+#TODO: Make user inteface
+#TODO: Polish the UI
+
+subjects={}
+subjecz = {
     "Algorithms": {
         "10:30 - 10.07.2026": Difficulty.Blue,
         "14:45 - 20.07.2026": Difficulty.Green,
@@ -94,15 +104,7 @@ option2="""
     To add a new Subject / new Review Session 
     write its name: 
 """
-"""
-import csv
 
-with open("data.csv", "r") as file:
-    reader = csv.DictReader(file)
-
-    for row in reader:
-        print(row["name"])
-    """
 while True:
     opt=input(main)
     if int(opt)==1:
@@ -114,6 +116,10 @@ while True:
         y=input("how difficult was it?")
         if y is "r":
             y=Difficulty.Red
+        elif  y is "y":
+            y=Difficulty.Yellow
+        elif  y is "g":
+                    y=Difficulty.Green
         subj= Subject(x)
         subj.logdata(diff=y)
         test1=subj.name

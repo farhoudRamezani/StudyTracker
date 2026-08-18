@@ -7,14 +7,17 @@ import csv
 from Data_Models.Diff_Model import Difficulty
 from pprint import pprint
 
-#TODO:Make the databse independent 
-#TODO:Add all options for diff 
+#DONE:Make the databse independent
+#DONE:Add all options for diff 
 #TODO:Add exit Button
 #TODO:Make sure the fullc MVP works really well 
+#TODO:Optimize the Review Algorithm
+#TODO:Encapsulate the code even more and build your own tools
 #TODO:Optimize the code and make sure that its DRY
 #TODO:Make it Terminal friendly
 #TODO: Make user inteface
 #TODO: Polish the UI
+#TODO:Add your signature
 
 subjects={}
 subjecz = {
@@ -79,7 +82,7 @@ subjecz = {
     },
 }
 name="fully_secure_database"
-database= Databasesys(subjects)
+database= Databasesys()
 database.createdb(name)
 
 lbox=ReviewSystem(subjects)
@@ -142,8 +145,8 @@ while True:
                 for i in printed:
                     print(i)
                     
-    elif int(opt)==1:
-                pass
+    elif int(opt)==5:
+        break
     else:
         pass
 

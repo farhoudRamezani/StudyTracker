@@ -5,7 +5,6 @@ class Databasesys:
     def __init__(self, data=None):
         if data is None:
             data = {}
-
         self.data = data
         self.secret_data={}
 
@@ -21,9 +20,9 @@ class Databasesys:
                 file,
                 fieldnames=["subject", "date", "difficulty"]
             )
-
             writer.writeheader()
-
+            
+            
             for subject, dates in self.data.items():
                 for date, difficulty in dates.items():
                     writer.writerow({
@@ -47,6 +46,18 @@ class Databasesys:
         # Save the updated dictionary
         self.createdb(filename)
 
+    def csvdel(self,filename,name,date):
+        rows=[]
+        with open(f"{filename}.csv" ,"r",newline="") as f:
+            reader=csv.reader(f)
+            for r in reader:
+                if r[0] !=name and r[1]!=date:
+                    rows.append(r)
+
+        with open(f"{filename}.csv","w",newline="")as file:
+            writer=csv.writer(file)
+            writer.writerows(rows)
+
     def delfromdb(self,sub,date,filename):
         """
         This takes the list created during the databse creation
@@ -63,8 +74,12 @@ class Databasesys:
         for i in self.secret_data:
             if i["subject"] == sub and i["date"] == date:
                 self.secret_data.remove(i)
+                self.csvdel(filename,sub,date)
                 break
-        self.createdb(filename)
+            else:
+                print("Something is very wrong")
+        print(f"this is the new databse:{self.secret_data}")
+        #self.createdb(filename)
     
     def showall(self,sub):
         """

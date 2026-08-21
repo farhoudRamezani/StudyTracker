@@ -5,13 +5,13 @@ from Data_Models.Review_Model import ReviewSystem
 def test_train_uses_last_three_entries_from_each_subject():
     dummy_data = {
         "Algorithms": {
-            "date1": Difficulty.Green,   # Should be ignored
+            "date1": Difficulty.Green,   
             "date2": Difficulty.Red,
             "date3": Difficulty.Yellow,
             "date4": Difficulty.Blue,
         },
         "Databases": {
-            "date1": Difficulty.Blue,    # Should be ignored
+            "date1": Difficulty.Blue,    
             "date2": Difficulty.Green,
             "date3": Difficulty.Yellow,
             "date4": Difficulty.Red,

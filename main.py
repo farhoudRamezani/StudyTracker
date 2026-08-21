@@ -2,151 +2,91 @@ from Data_Models.Subject_Model import Subject
 from Data_Models.Diff_Model import Difficulty
 from Data_Models.Saving_Model import Databasesys
 from Data_Models.Review_Model import ReviewSystem
-from Data_Models.Log_Model import LogSystem
-import csv
-from Data_Models.Diff_Model import Difficulty
-from pprint import pprint
 
-#DONE:Make the databse independent
-#DONE:Add all options for diff 
-#TODO:Add exit Button
-#TODO:Make sure the fullc MVP works really well 
-#TODO:Optimize the Review Algorithm
-#TODO:Encapsulate the code even more and build your own tools
-#TODO:Optimize the code and make sure that its DRY
-#TODO:Make it Terminal friendly
-#TODO: Make user inteface
-#TODO: Polish the UI
-#TODO:Add your signature
 
-subjects={}
-subjecz = {
-    "Algorithms": {
-        "10:30 - 10.07.2026": Difficulty.Blue,
-        "14:45 - 20.07.2026": Difficulty.Green,
-        "09:15 - 25.07.2026": Difficulty.Red,
-    },
+name = "fully_secure_database"
+database = Databasesys()
+database.csvtodic(name)
 
-    "Databases": {
-        "11:00 - 11.07.2026": Difficulty.Green,
-        "16:20 - 19.07.2026": Difficulty.Yellow,
-        "13:40 - 27.07.2026": Difficulty.Blue,
-    },
+main_menu = """
+Welcome to your Study Tracker. How can I help?
+    1) Open review log
+    2) Add new review
+    3) Delete review
+    4) Show the entire database
+    5) Exit
 
-    "Operating Systems": {
-        "08:45 - 12.07.2026": Difficulty.Red,
-        "12:30 - 22.07.2026": Difficulty.Yellow,
-        "18:10 - 01.08.2026": Difficulty.Green,
-    },
+Choose an option: """
 
-    "Computer Networks": {
-        "15:15 - 13.07.2026": Difficulty.Blue,
-        "10:25 - 23.07.2026": Difficulty.Green,
-        "17:50 - 02.08.2026": Difficulty.Yellow,
-    },
+option2 = """
+To add a new subject or review session,
+write the subject name: """
 
-    "Linear Algebra": {
-        "09:30 - 14.07.2026": Difficulty.Yellow,
-        "14:10 - 24.07.2026": Difficulty.Red,
-        "11:45 - 03.08.2026": Difficulty.Green,
-    },
-
-    "Calculus": {
-        "13:20 - 15.07.2026": Difficulty.Green,
-        "18:30 - 25.07.2026": Difficulty.Blue,
-        "08:15 - 04.08.2026": Difficulty.Yellow,
-    },
-
-    "Software Engineering": {
-        "10:50 - 16.07.2026": Difficulty.Blue,
-        "15:40 - 26.07.2026": Difficulty.Green,
-        "19:00 - 03.08.2026": Difficulty.Blue,
-    },
-
-    "Artificial Intelligence": {
-        "12:10 - 17.07.2026": Difficulty.Red,
-        "09:55 - 28.07.2026": Difficulty.Yellow,
-        "16:35 - 04.08.2026": Difficulty.Green,
-    },
-
-    "Computer Architecture": {
-        "14:30 - 18.07.2026": Difficulty.Yellow,
-        "11:25 - 29.07.2026": Difficulty.Red,
-        "17:15 - 03.08.2026": Difficulty.Yellow,
-    },
-
-    "Discrete Mathematics": {
-        "08:20 - 19.07.2026": Difficulty.Green,
-        "13:55 - 30.07.2026": Difficulty.Blue,
-        "18:45 - 04.08.2026": Difficulty.Green,
-    },
-}
-name="fully_secure_database"
-database= Databasesys()
-database.createdb(name)
-
-lbox=ReviewSystem(subjects)
-sorted_box=lbox.train()
-review_topics=sorted_box[0:3]
-#print(f"This is your results{review_topics}")
-print("this here:")
-pprint(review_topics)
-
-#CLI
-# the user options
-main="""
-    Welcome to your study tracker , how can I help?
-        1)Open Review log
-        2)Add new review
-        3)Delete Review
-        4)Show the entire database
-        5)Exit
-
-"""
-option2="""
-    To add a new Subject / new Review Session 
-    write its name: 
-"""
 
 while True:
-    opt=input(main)
-    if int(opt)==1:
-        for i in review_topics:
-            f=i[0]
-            print(f)
-    elif int(opt)==2:
-        x=input(option2)
-        y=input("how difficult was it?")
-        if y is "r":
-            y=Difficulty.Red
-        elif  y is "y":
-            y=Difficulty.Yellow
-        elif  y is "g":
-                    y=Difficulty.Green
-        subj= Subject(x)
-        subj.logdata(diff=y)
-        test1=subj.name
-        test2=subj.dates
-        print(f"{test1} has the following revies and diff: {test2}")
-        database.addtodb(subj,name)
-    elif int(opt)==3:
-            k=input("what topic you wanna delete")
-            database.showall(k)
-            j=input("What date do you wanna delet")
-            database.delfromdb(k,j,name)
-    elif int(opt)==4:
-            
-            with open(f"{name}.csv","r") as f:
-                reader=csv.DictReader(f)
-                printed=[]
-                for row in reader:
-                    if row["subject"] not in printed:
-                        printed.append(row["subject"])
-                for i in printed:
-                    print(i)
-                    
-    elif int(opt)==5:
-        break
-    else:
-        pass
+    opt = input(main_menu).strip()
 
+    if opt == "1":
+        review_topics = ReviewSystem(database.data).train()[0:3]
+
+        if not review_topics:
+            print("No reviews found.")
+        else:
+            for subject_name, difficulty in review_topics:
+                print(f"{subject_name}: {difficulty}")
+
+    elif opt == "2":
+        subject_name = input(option2).strip()
+
+        if not subject_name:
+            print("The subject name cannot be empty.")
+            continue
+
+        difficulty = input(
+            "How difficult was it? (r = red, y = yellow, "
+            "g = green, b = blue): "
+        ).strip().lower()
+
+        if difficulty == "r":
+            difficulty = Difficulty.Red
+        elif difficulty == "y":
+            difficulty = Difficulty.Yellow
+        elif difficulty == "g":
+            difficulty = Difficulty.Green
+        elif difficulty == "b":
+            difficulty = Difficulty.Blue
+        else:
+            print("Invalid difficulty. Please use r, y, g, or b.")
+            continue
+
+        subject = Subject(subject_name, dates={})
+        subject.logdata(diff=difficulty)
+        database.addtodb(subject, name)
+
+        print(f"Review added for {subject.name}.")
+
+    elif opt == "3":
+        subject_name = input(
+            "What subject do you want to delete from? "
+        ).strip()
+
+        if database.showall(subject_name):
+            date = input("What date do you want to delete? ").strip()
+            database.delfromdb(subject_name, date, name)
+
+    elif opt == "4":
+        if not database.data:
+            print("The database is empty.")
+        else:
+            for subject_name, dates in database.data.items():
+                print(f"\n{subject_name}")
+
+                for date, difficulty in dates.items():
+                    print(f"  {date}: {difficulty.value.upper()}")
+
+    elif opt == "5":
+        print("Goodbye!")
+        break
+
+    else:
+        print("Invalid option. Please choose a number from 1 to 5.")

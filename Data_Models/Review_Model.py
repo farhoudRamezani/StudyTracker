@@ -8,17 +8,24 @@ class ReviewSystem:
         greenbox = []
 
         for subject_name, subject_dates in self.dic.items():
-            last_three = list(subject_dates.values())[-1:]
+            last_three = list(subject_dates.values())[-3:]
 
             for difficulty in last_three:
-                result = (subject_name, difficulty.value.upper())
+                difficulty_value = getattr(
+                    difficulty,
+                    "value",
+                    difficulty
+                )
 
-                if difficulty.value in ("r", "b"):
+                result = (
+                    subject_name,
+                    difficulty_value.upper()
+                )
+
+                if difficulty_value in ("r", "b"):
                     redbox.append(result)
-
-                elif difficulty.value == "y":
+                elif difficulty_value == "y":
                     yellowbox.append(result)
-
                 else:
                     greenbox.append(result)
 

@@ -23,13 +23,17 @@ def test_train_uses_last_three_entries_from_each_subject():
     result = review_system.train()
 
     expected = [
-        Difficulty.Red,
-        Difficulty.Blue,
-        Difficulty.Red,
-        Difficulty.Yellow,
-        Difficulty.Yellow,
-        Difficulty.Green,
+        ("Algorithms", "R"),
+        ("Algorithms", "B"),
+        ("Databases", "R"),
+        ("Algorithms", "Y"),
+        ("Databases", "Y"),
+        ("Databases", "G"),
     ]
 
     assert result == expected
-print("done")
+
+
+if __name__ == "__main__":
+    test_train_uses_last_three_entries_from_each_subject()
+    print("All tests passed.")
